@@ -28,12 +28,12 @@ return null;
 var node_value = node.value;
 if(cljs.core.not_EQ_.cljs$core$IFn$_invoke$arity$2(node_value,dom_value)){
 return reagent.impl.batching.do_after_render((function (){
-var _STAR_force_set_dom_value_STAR__orig_val__27989 = reagent.impl.input._STAR_force_set_dom_value_STAR_;
-var _STAR_force_set_dom_value_STAR__temp_val__27990 = true;
-(reagent.impl.input._STAR_force_set_dom_value_STAR_ = _STAR_force_set_dom_value_STAR__temp_val__27990);
+var _STAR_force_set_dom_value_STAR__orig_val__27984 = reagent.impl.input._STAR_force_set_dom_value_STAR_;
+var _STAR_force_set_dom_value_STAR__temp_val__27985 = true;
+(reagent.impl.input._STAR_force_set_dom_value_STAR_ = _STAR_force_set_dom_value_STAR__temp_val__27985);
 
 try{return (reagent.impl.input.input_component_set_value.cljs$core$IFn$_invoke$arity$1 ? reagent.impl.input.input_component_set_value.cljs$core$IFn$_invoke$arity$1(component) : reagent.impl.input.input_component_set_value.call(null, component));
-}finally {(reagent.impl.input._STAR_force_set_dom_value_STAR_ = _STAR_force_set_dom_value_STAR__orig_val__27989);
+}finally {(reagent.impl.input._STAR_force_set_dom_value_STAR_ = _STAR_force_set_dom_value_STAR__orig_val__27984);
 }}));
 } else {
 var existing_offset_from_end = (cljs.core.count(node_value) - node.selectionStart);
@@ -135,8 +135,8 @@ delete jsprops["value"];
 
 (jsprops.defaultValue = value);
 
-(jsprops.onChange = (function (p1__27992_SHARP_){
-return reagent.impl.input.input_handle_change(this$,on_change,p1__27992_SHARP_);
+(jsprops.onChange = (function (p1__27991_SHARP_){
+return reagent.impl.input.input_handle_change(this$,on_change,p1__27991_SHARP_);
 }));
 
 return (jsprops.ref = this$.reagentRefFn);
@@ -148,8 +148,8 @@ reagent.impl.input.input_unmount = (function reagent$impl$input$input_unmount(th
 return (this$.cljsInputLive = null);
 });
 reagent.impl.input.input_component_QMARK_ = (function reagent$impl$input$input_component_QMARK_(x){
-var G__27996 = x;
-switch (G__27996) {
+var G__27993 = x;
+switch (G__27993) {
 case "input":
 case "textarea":
 return true;
