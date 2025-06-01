@@ -2,7 +2,7 @@
   (:require [reagent.core :as r]
             [reagent.dom :as rdom]
             [app.frontend.ui.main-menu :refer [main-menu]]
-            [app.frontend.ui.battlefield :refer [display-battlefield]]))
+            [app.frontend.ui.battlefield.core :refer [display-battlefield]]))
 
 (defonce app-state (r/atom {:screen :menu}))
 

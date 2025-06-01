@@ -23,8 +23,8 @@
     [:div {:style {:height "50px"}}]
     [buttons/normal-button "Options" #(js/alert "Options coming soon!")]]
    [:div {:style {:display "flex" :gap "10px"}}
-    [chars/display-warrior]
-    [chars/display-wizard]
-    [chars/display-medic]]]
+    [chars/display-warrior 48]
+    [chars/display-wizard 48]
+    [chars/display-medic 48]]]
    ;[bf/pixi-map]]
   )
