@@ -9,10 +9,8 @@
   (swap! state/characters
          (fn [cs]
            (mapv (fn [c]
-                   (js/console.log (clj->js (:selected? c)))
                    (if (:selected? c)
                      (do
-                       (js/console.log (clj->js (:sprite c)))
                        (let [sprite (:sprite c)]
                          (characters/animate-move! sprite
                                                    (:x c) (:y c)
@@ -31,7 +29,8 @@
         {:keys [x y]} character]
     (doseq [dx (range (- x radius) (+ x radius 1))
             dy (range (- y radius) (+ y radius 1))
-            :when (not= [dx dy] [x y])]
+            :when (and (not= [dx dy] [x y])
+                       (sprites/walkable-tile? dx dy @state/map-data))]
       (let [sprite (sprites/create-map-tile-sprite texture 0 dx dy)]
         (set! (.-alpha sprite) 0.6)
         (set! (.-eventMode sprite) "dynamic")

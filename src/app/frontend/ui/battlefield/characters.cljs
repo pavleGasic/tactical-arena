@@ -4,6 +4,12 @@
             ["pixi.js" :refer [Texture Assets SCALE_MODES]]
             [app.frontend.ui.battlefield.config :as config]))
 
+(defn load-character-asset [asset-path]
+  (-> (.load Assets asset-path)
+      (.then (fn [_]
+               (let [texture (Texture.from asset-path)]
+                 (set! (.-scaleMode (.-baseTexture texture)) SCALE_MODES.NEAREST)
+                 texture)))))
 
 (defn animate-move! [sprite from-x from-y to-x to-y]
   (let [start-time (.now js/performance)
@@ -24,13 +30,18 @@
       (js/requestAnimationFrame step))))
 
 (defn render-characters! [map-container]
-  (-> (.load Assets config/warrior-sprite-path)
-      (.then (fn [_]
-               (let [texture (Texture.from config/warrior-sprite-path)]
-                 (set! (.-scaleMode (.-baseTexture texture)) SCALE_MODES.NEAREST)
-                 (doseq [character @state/characters]
-                   (let [sprite (sprites/create-character-sprite character texture)]
-                     (swap! state/characters #(mapv (fn [c]
-                                                (if (= (:id c) (:id character))
-                                                  (assoc c :sprite sprite) c)) %))
-                     (.addChild ^js map-container sprite))))))))
+  (doseq [character @state/characters]
+    (let [load-promise-texture (case (:type character)
+                         :warrior (load-character-asset config/warrior-path)
+                         :wizard (load-character-asset config/wizard-path)
+                         :medic (load-character-asset config/medic-path))]
+      (.then load-promise-texture
+             (fn [texture]
+               (let [sprite (sprites/create-character-sprite character texture)]
+                 (swap! state/characters
+                        #(mapv (fn [c]
+                                 (if (= (:id c) (:id character))
+                                   (assoc c :sprite sprite)
+                                   c))
+                               %))
+                 (.addChild ^js map-container sprite)))))))

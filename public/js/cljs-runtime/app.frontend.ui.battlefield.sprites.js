@@ -34,14 +34,31 @@ var sprite = (new module$node_modules$pixi_DOT_js$lib$index.Sprite(texture));
 (sprite.buttonMode = true);
 
 sprite.on("pointerdown",(function (_){
-return cljs.core.swap_BANG_.cljs$core$IFn$_invoke$arity$2(app.frontend.ui.battlefield.state.characters,(function (p1__40434_SHARP_){
+return cljs.core.swap_BANG_.cljs$core$IFn$_invoke$arity$2(app.frontend.ui.battlefield.state.characters,(function (p1__36982_SHARP_){
 return cljs.core.mapv.cljs$core$IFn$_invoke$arity$2((function (c){
 return cljs.core.assoc.cljs$core$IFn$_invoke$arity$3(c,new cljs.core.Keyword(null,"selected?","selected?",-742502788),cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2(new cljs.core.Keyword(null,"id","id",-1388402092).cljs$core$IFn$_invoke$arity$1(c),new cljs.core.Keyword(null,"id","id",-1388402092).cljs$core$IFn$_invoke$arity$1(character)));
-}),p1__40434_SHARP_);
+}),p1__36982_SHARP_);
 }));
 }));
 
 return sprite;
+});
+app.frontend.ui.battlefield.sprites.walkable_tile_QMARK_ = (function app$frontend$ui$battlefield$sprites$walkable_tile_QMARK_(x,y,map_data){
+return cljs.core.some((function (layer){
+return cljs.core.some((function (tile){
+var and__5000__auto__ = cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2(new cljs.core.Keyword(null,"x","x",2099068185).cljs$core$IFn$_invoke$arity$1(tile),x);
+if(and__5000__auto__){
+var and__5000__auto____$1 = cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2(new cljs.core.Keyword(null,"y","y",-1757859776).cljs$core$IFn$_invoke$arity$1(tile),y);
+if(and__5000__auto____$1){
+return new cljs.core.Keyword(null,"walkable?","walkable?",44668750).cljs$core$IFn$_invoke$arity$1(tile);
+} else {
+return and__5000__auto____$1;
+}
+} else {
+return and__5000__auto__;
+}
+}),new cljs.core.Keyword(null,"tiles","tiles",178505240).cljs$core$IFn$_invoke$arity$1(layer));
+}),new cljs.core.Keyword(null,"layers","layers",1944875032).cljs$core$IFn$_invoke$arity$1(map_data));
 });
 
 //# sourceMappingURL=app.frontend.ui.battlefield.sprites.js.map

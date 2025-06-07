@@ -1,9 +1,9 @@
 goog.provide('app.frontend.ui.battlefield.core');
 var module$node_modules$pixi_DOT_js$lib$index=shadow.js.require("module$node_modules$pixi_DOT_js$lib$index", {});
 app.frontend.ui.battlefield.core.render_tilemap = (function app$frontend$ui$battlefield$core$render_tilemap(app__$1){
-var map__27983 = cljs.core.deref(app.frontend.ui.battlefield.state.map_data);
-var map__27983__$1 = cljs.core.__destructure_map(map__27983);
-var layers = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__27983__$1,new cljs.core.Keyword(null,"layers","layers",1944875032));
+var map__37236 = cljs.core.deref(app.frontend.ui.battlefield.state.map_data);
+var map__37236__$1 = cljs.core.__destructure_map(map__37236);
+var layers = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__37236__$1,new cljs.core.Keyword(null,"layers","layers",1944875032));
 var map_dimensions = app.frontend.ui.battlefield.map.calc_map_dimensions(cljs.core.deref(app.frontend.ui.battlefield.state.map_data));
 var screen_width = app__$1.renderer.width;
 var screen_height = app__$1.renderer.height;
@@ -31,59 +31,71 @@ app.frontend.ui.battlefield.map.populate_map_container_BANG_(map_container,layer
 app.frontend.ui.battlefield.characters.render_characters_BANG_(map_container);
 
 return cljs.core.add_watch(app.frontend.ui.battlefield.state.characters,new cljs.core.Keyword(null,"movement-overlay","movement-overlay",512888461),(function (___$2,___$3,___$4,new_state){
-var seq__27984 = cljs.core.seq(new_state);
-var chunk__27985 = null;
-var count__27986 = (0);
-var i__27987 = (0);
+var seq__37237 = cljs.core.seq(new_state);
+var chunk__37238 = null;
+var count__37239 = (0);
+var i__37240 = (0);
 while(true){
-if((i__27987 < count__27986)){
-var c = chunk__27985.cljs$core$IIndexed$_nth$arity$2(null, i__27987);
-if(cljs.core.truth_(new cljs.core.Keyword(null,"selected?","selected?",-742502788).cljs$core$IFn$_invoke$arity$1(c))){
+if((i__37240 < count__37239)){
+var c = chunk__37238.cljs$core$IIndexed$_nth$arity$2(null, i__37240);
+if(cljs.core.truth_((function (){var and__5000__auto__ = new cljs.core.Keyword(null,"selected?","selected?",-742502788).cljs$core$IFn$_invoke$arity$1(c);
+if(cljs.core.truth_(and__5000__auto__)){
+return cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2(cljs.core.deref(app.frontend.ui.battlefield.state.overlay_placeholders),cljs.core.PersistentVector.EMPTY);
+} else {
+return and__5000__auto__;
+}
+})())){
 app.frontend.ui.battlefield.overlay.display_move_overlay(map_container,c,placeholder_texture);
 } else {
 }
 
 
-var G__27989 = seq__27984;
-var G__27990 = chunk__27985;
-var G__27991 = count__27986;
-var G__27992 = (i__27987 + (1));
-seq__27984 = G__27989;
-chunk__27985 = G__27990;
-count__27986 = G__27991;
-i__27987 = G__27992;
+var G__37242 = seq__37237;
+var G__37243 = chunk__37238;
+var G__37244 = count__37239;
+var G__37245 = (i__37240 + (1));
+seq__37237 = G__37242;
+chunk__37238 = G__37243;
+count__37239 = G__37244;
+i__37240 = G__37245;
 continue;
 } else {
-var temp__5823__auto__ = cljs.core.seq(seq__27984);
+var temp__5823__auto__ = cljs.core.seq(seq__37237);
 if(temp__5823__auto__){
-var seq__27984__$1 = temp__5823__auto__;
-if(cljs.core.chunked_seq_QMARK_(seq__27984__$1)){
-var c__5525__auto__ = cljs.core.chunk_first(seq__27984__$1);
-var G__27993 = cljs.core.chunk_rest(seq__27984__$1);
-var G__27994 = c__5525__auto__;
-var G__27995 = cljs.core.count(c__5525__auto__);
-var G__27996 = (0);
-seq__27984 = G__27993;
-chunk__27985 = G__27994;
-count__27986 = G__27995;
-i__27987 = G__27996;
+var seq__37237__$1 = temp__5823__auto__;
+if(cljs.core.chunked_seq_QMARK_(seq__37237__$1)){
+var c__5525__auto__ = cljs.core.chunk_first(seq__37237__$1);
+var G__37246 = cljs.core.chunk_rest(seq__37237__$1);
+var G__37247 = c__5525__auto__;
+var G__37248 = cljs.core.count(c__5525__auto__);
+var G__37249 = (0);
+seq__37237 = G__37246;
+chunk__37238 = G__37247;
+count__37239 = G__37248;
+i__37240 = G__37249;
 continue;
 } else {
-var c = cljs.core.first(seq__27984__$1);
-if(cljs.core.truth_(new cljs.core.Keyword(null,"selected?","selected?",-742502788).cljs$core$IFn$_invoke$arity$1(c))){
+var c = cljs.core.first(seq__37237__$1);
+if(cljs.core.truth_((function (){var and__5000__auto__ = new cljs.core.Keyword(null,"selected?","selected?",-742502788).cljs$core$IFn$_invoke$arity$1(c);
+if(cljs.core.truth_(and__5000__auto__)){
+return cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2(cljs.core.deref(app.frontend.ui.battlefield.state.overlay_placeholders),cljs.core.PersistentVector.EMPTY);
+} else {
+return and__5000__auto__;
+}
+})())){
 app.frontend.ui.battlefield.overlay.display_move_overlay(map_container,c,placeholder_texture);
 } else {
 }
 
 
-var G__27997 = cljs.core.next(seq__27984__$1);
-var G__27998 = null;
-var G__27999 = (0);
-var G__28000 = (0);
-seq__27984 = G__27997;
-chunk__27985 = G__27998;
-count__27986 = G__27999;
-i__27987 = G__28000;
+var G__37250 = cljs.core.next(seq__37237__$1);
+var G__37251 = null;
+var G__37252 = (0);
+var G__37253 = (0);
+seq__37237 = G__37250;
+chunk__37238 = G__37251;
+count__37239 = G__37252;
+i__37240 = G__37253;
 continue;
 }
 } else {
@@ -144,8 +156,8 @@ return app.frontend.ui.battlefield.core.render_tilemap(app__$1);
 return null;
 }
 }),new cljs.core.Keyword(null,"reagent-render","reagent-render",-985383853),(function (){
-return new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"div","div",1057191632),new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"div","div",1057191632),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"ref","ref",1289896967),(function (p1__27988_SHARP_){
-return cljs.core.reset_BANG_(canvas_div,p1__27988_SHARP_);
+return new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"div","div",1057191632),new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"div","div",1057191632),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"ref","ref",1289896967),(function (p1__37241_SHARP_){
+return cljs.core.reset_BANG_(canvas_div,p1__37241_SHARP_);
 })], null)], null),(cljs.core.truth_(cljs.core.deref(app.frontend.ui.battlefield.state.map_data))?null:new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"p","p",151049309),"Loading-map..."], null))], null);
 })], null));
 });

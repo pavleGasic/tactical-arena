@@ -38,7 +38,7 @@
                       (add-watch state/characters :movement-overlay
                                  (fn [_ _ _ new-state]
                                    (doseq [c new-state]
-                                     (when (:selected? c)
+                                     (when (and (:selected? c) (= @state/overlay-placeholders []))
                                        (overlay/display-move-overlay map-container c placeholder-texture))))))))))))))
 
 (defn display-battlefield []

@@ -30,3 +30,12 @@
          (fn [_]
            (swap! state/characters #(mapv (fn [c] (assoc c :selected? (= (:id c) (:id character)))) %))))
     sprite))
+
+(defn walkable-tile? [x y map-data]
+  (some (fn [layer]
+          (some (fn [tile]
+                  (and (= (:x tile) x)
+                       (= (:y tile) y)
+                       (:walkable? tile)))
+                (:tiles layer)))
+        (:layers map-data)))

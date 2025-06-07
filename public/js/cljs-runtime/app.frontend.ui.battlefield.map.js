@@ -1,18 +1,30 @@
 goog.provide('app.frontend.ui.battlefield.map');
-app.frontend.ui.battlefield.map.load_map_BANG_ = (function app$frontend$ui$battlefield$map$load_map_BANG_(){
-return fetch("/assets/map.json").then((function (p1__40435_SHARP_){
-return p1__40435_SHARP_.json();
-})).then((function (p1__40436_SHARP_){
-return cljs.core.reset_BANG_(app.frontend.ui.battlefield.state.map_data,cljs.core.js__GT_clj.cljs$core$IFn$_invoke$arity$variadic(p1__40436_SHARP_,cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2([new cljs.core.Keyword(null,"keywordize-keys","keywordize-keys",1310784252),true], 0)));
-})).catch((function (p1__40437_SHARP_){
-return console.error("Failed to load map:",p1__40437_SHARP_);
+app.frontend.ui.battlefield.map.walkable_ids = new cljs.core.PersistentHashSet(null, new cljs.core.PersistentArrayMap(null, 9, ["26",null,"28",null,"19",null,"12",null,"27",null,"11",null,"10",null,"23",null,"29",null], null), null);
+app.frontend.ui.battlefield.map.mark_walkable = (function app$frontend$ui$battlefield$map$mark_walkable(tile){
+return cljs.core.assoc.cljs$core$IFn$_invoke$arity$3(tile,new cljs.core.Keyword(null,"walkable?","walkable?",44668750),cljs.core.contains_QMARK_(app.frontend.ui.battlefield.map.walkable_ids,new cljs.core.Keyword(null,"id","id",-1388402092).cljs$core$IFn$_invoke$arity$1(tile)));
+});
+app.frontend.ui.battlefield.map.mark_walkable_layer = (function app$frontend$ui$battlefield$map$mark_walkable_layer(layer){
+return cljs.core.update.cljs$core$IFn$_invoke$arity$3(layer,new cljs.core.Keyword(null,"tiles","tiles",178505240),(function (p1__36983_SHARP_){
+return cljs.core.mapv.cljs$core$IFn$_invoke$arity$2(app.frontend.ui.battlefield.map.mark_walkable,p1__36983_SHARP_);
 }));
 });
-app.frontend.ui.battlefield.map.calc_map_dimensions = (function app$frontend$ui$battlefield$map$calc_map_dimensions(p__40438){
-var map__40439 = p__40438;
-var map__40439__$1 = cljs.core.__destructure_map(map__40439);
-var tileSize = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__40439__$1,new cljs.core.Keyword(null,"tileSize","tileSize",997837978));
-var layers = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__40439__$1,new cljs.core.Keyword(null,"layers","layers",1944875032));
+app.frontend.ui.battlefield.map.load_map_BANG_ = (function app$frontend$ui$battlefield$map$load_map_BANG_(){
+return fetch("/assets/map.json").then((function (p1__36984_SHARP_){
+return p1__36984_SHARP_.json();
+})).then((function (raw_data){
+var data = cljs.core.js__GT_clj.cljs$core$IFn$_invoke$arity$variadic(raw_data,cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2([new cljs.core.Keyword(null,"keywordize-keys","keywordize-keys",1310784252),true], 0));
+var layers = new cljs.core.Keyword(null,"layers","layers",1944875032).cljs$core$IFn$_invoke$arity$1(data);
+var updated_layers = cljs.core.mapv.cljs$core$IFn$_invoke$arity$2(app.frontend.ui.battlefield.map.mark_walkable_layer,layers);
+return cljs.core.reset_BANG_(app.frontend.ui.battlefield.state.map_data,cljs.core.assoc.cljs$core$IFn$_invoke$arity$3(data,new cljs.core.Keyword(null,"layers","layers",1944875032),updated_layers));
+})).catch((function (p1__36985_SHARP_){
+return console.error("Failed to load map:",p1__36985_SHARP_);
+}));
+});
+app.frontend.ui.battlefield.map.calc_map_dimensions = (function app$frontend$ui$battlefield$map$calc_map_dimensions(p__36986){
+var map__36987 = p__36986;
+var map__36987__$1 = cljs.core.__destructure_map(map__36987);
+var tileSize = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__36987__$1,new cljs.core.Keyword(null,"tileSize","tileSize",997837978));
+var layers = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__36987__$1,new cljs.core.Keyword(null,"layers","layers",1944875032));
 var height_in_tiles = cljs.core.apply.cljs$core$IFn$_invoke$arity$2(cljs.core.max,cljs.core.mapcat.cljs$core$IFn$_invoke$arity$variadic((function (layer){
 return cljs.core.map.cljs$core$IFn$_invoke$arity$2(new cljs.core.Keyword(null,"y","y",-1757859776),new cljs.core.Keyword(null,"tiles","tiles",178505240).cljs$core$IFn$_invoke$arity$1(layer));
 }),cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2([layers], 0)));
@@ -24,76 +36,72 @@ var map_width = (((width_in_tiles + (1)) * tileSize) * app.frontend.ui.battlefie
 return new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"map-height","map-height",1060022070),map_height,new cljs.core.Keyword(null,"map-width","map-width",-1419340239),map_width], null);
 });
 app.frontend.ui.battlefield.map.populate_map_container_BANG_ = (function app$frontend$ui$battlefield$map$populate_map_container_BANG_(map_container,layers,texture){
-var seq__40441 = cljs.core.seq(layers);
-var chunk__40446 = null;
-var count__40447 = (0);
-var i__40448 = (0);
+var seq__36994 = cljs.core.seq(layers);
+var chunk__36999 = null;
+var count__37000 = (0);
+var i__37001 = (0);
 while(true){
-if((i__40448 < count__40447)){
-var map__40481 = chunk__40446.cljs$core$IIndexed$_nth$arity$2(null, i__40448);
-var map__40481__$1 = cljs.core.__destructure_map(map__40481);
-var tiles = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__40481__$1,new cljs.core.Keyword(null,"tiles","tiles",178505240));
-var seq__40449_40512 = cljs.core.seq(tiles);
-var chunk__40450_40513 = null;
-var count__40451_40514 = (0);
-var i__40452_40515 = (0);
+if((i__37001 < count__37000)){
+var map__37019 = chunk__36999.cljs$core$IIndexed$_nth$arity$2(null, i__37001);
+var map__37019__$1 = cljs.core.__destructure_map(map__37019);
+var tiles = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__37019__$1,new cljs.core.Keyword(null,"tiles","tiles",178505240));
+var seq__37002_37066 = cljs.core.seq(tiles);
+var chunk__37003_37067 = null;
+var count__37004_37068 = (0);
+var i__37005_37069 = (0);
 while(true){
-if((i__40452_40515 < count__40451_40514)){
-var map__40484_40516 = chunk__40450_40513.cljs$core$IIndexed$_nth$arity$2(null, i__40452_40515);
-var map__40484_40517__$1 = cljs.core.__destructure_map(map__40484_40516);
-var id_40518 = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__40484_40517__$1,new cljs.core.Keyword(null,"id","id",-1388402092));
-var x_40519 = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__40484_40517__$1,new cljs.core.Keyword(null,"x","x",2099068185));
-var y_40520 = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__40484_40517__$1,new cljs.core.Keyword(null,"y","y",-1757859776));
-var sprite_40521 = app.frontend.ui.battlefield.sprites.create_map_tile_sprite(texture,id_40518,x_40519,y_40520);
-console.log(cljs.core.clj__GT_js(sprite_40521));
-
-map_container.addChild(sprite_40521);
+if((i__37005_37069 < count__37004_37068)){
+var map__37034_37070 = chunk__37003_37067.cljs$core$IIndexed$_nth$arity$2(null, i__37005_37069);
+var map__37034_37071__$1 = cljs.core.__destructure_map(map__37034_37070);
+var id_37072 = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__37034_37071__$1,new cljs.core.Keyword(null,"id","id",-1388402092));
+var x_37073 = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__37034_37071__$1,new cljs.core.Keyword(null,"x","x",2099068185));
+var y_37074 = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__37034_37071__$1,new cljs.core.Keyword(null,"y","y",-1757859776));
+var sprite_37075 = app.frontend.ui.battlefield.sprites.create_map_tile_sprite(texture,id_37072,x_37073,y_37074);
+map_container.addChild(sprite_37075);
 
 
-var G__40522 = seq__40449_40512;
-var G__40523 = chunk__40450_40513;
-var G__40524 = count__40451_40514;
-var G__40525 = (i__40452_40515 + (1));
-seq__40449_40512 = G__40522;
-chunk__40450_40513 = G__40523;
-count__40451_40514 = G__40524;
-i__40452_40515 = G__40525;
+var G__37076 = seq__37002_37066;
+var G__37077 = chunk__37003_37067;
+var G__37078 = count__37004_37068;
+var G__37079 = (i__37005_37069 + (1));
+seq__37002_37066 = G__37076;
+chunk__37003_37067 = G__37077;
+count__37004_37068 = G__37078;
+i__37005_37069 = G__37079;
 continue;
 } else {
-var temp__5823__auto___40526 = cljs.core.seq(seq__40449_40512);
-if(temp__5823__auto___40526){
-var seq__40449_40527__$1 = temp__5823__auto___40526;
-if(cljs.core.chunked_seq_QMARK_(seq__40449_40527__$1)){
-var c__5525__auto___40528 = cljs.core.chunk_first(seq__40449_40527__$1);
-var G__40529 = cljs.core.chunk_rest(seq__40449_40527__$1);
-var G__40530 = c__5525__auto___40528;
-var G__40531 = cljs.core.count(c__5525__auto___40528);
-var G__40532 = (0);
-seq__40449_40512 = G__40529;
-chunk__40450_40513 = G__40530;
-count__40451_40514 = G__40531;
-i__40452_40515 = G__40532;
+var temp__5823__auto___37080 = cljs.core.seq(seq__37002_37066);
+if(temp__5823__auto___37080){
+var seq__37002_37081__$1 = temp__5823__auto___37080;
+if(cljs.core.chunked_seq_QMARK_(seq__37002_37081__$1)){
+var c__5525__auto___37082 = cljs.core.chunk_first(seq__37002_37081__$1);
+var G__37083 = cljs.core.chunk_rest(seq__37002_37081__$1);
+var G__37084 = c__5525__auto___37082;
+var G__37085 = cljs.core.count(c__5525__auto___37082);
+var G__37086 = (0);
+seq__37002_37066 = G__37083;
+chunk__37003_37067 = G__37084;
+count__37004_37068 = G__37085;
+i__37005_37069 = G__37086;
 continue;
 } else {
-var map__40489_40533 = cljs.core.first(seq__40449_40527__$1);
-var map__40489_40534__$1 = cljs.core.__destructure_map(map__40489_40533);
-var id_40535 = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__40489_40534__$1,new cljs.core.Keyword(null,"id","id",-1388402092));
-var x_40536 = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__40489_40534__$1,new cljs.core.Keyword(null,"x","x",2099068185));
-var y_40537 = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__40489_40534__$1,new cljs.core.Keyword(null,"y","y",-1757859776));
-var sprite_40538 = app.frontend.ui.battlefield.sprites.create_map_tile_sprite(texture,id_40535,x_40536,y_40537);
-console.log(cljs.core.clj__GT_js(sprite_40538));
-
-map_container.addChild(sprite_40538);
+var map__37039_37087 = cljs.core.first(seq__37002_37081__$1);
+var map__37039_37088__$1 = cljs.core.__destructure_map(map__37039_37087);
+var id_37089 = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__37039_37088__$1,new cljs.core.Keyword(null,"id","id",-1388402092));
+var x_37090 = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__37039_37088__$1,new cljs.core.Keyword(null,"x","x",2099068185));
+var y_37091 = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__37039_37088__$1,new cljs.core.Keyword(null,"y","y",-1757859776));
+var sprite_37092 = app.frontend.ui.battlefield.sprites.create_map_tile_sprite(texture,id_37089,x_37090,y_37091);
+map_container.addChild(sprite_37092);
 
 
-var G__40539 = cljs.core.next(seq__40449_40527__$1);
-var G__40540 = null;
-var G__40541 = (0);
-var G__40542 = (0);
-seq__40449_40512 = G__40539;
-chunk__40450_40513 = G__40540;
-count__40451_40514 = G__40541;
-i__40452_40515 = G__40542;
+var G__37093 = cljs.core.next(seq__37002_37081__$1);
+var G__37094 = null;
+var G__37095 = (0);
+var G__37096 = (0);
+seq__37002_37066 = G__37093;
+chunk__37003_37067 = G__37094;
+count__37004_37068 = G__37095;
+i__37005_37069 = G__37096;
 continue;
 }
 } else {
@@ -102,95 +110,91 @@ continue;
 break;
 }
 
-var G__40543 = seq__40441;
-var G__40544 = chunk__40446;
-var G__40545 = count__40447;
-var G__40546 = (i__40448 + (1));
-seq__40441 = G__40543;
-chunk__40446 = G__40544;
-count__40447 = G__40545;
-i__40448 = G__40546;
+var G__37097 = seq__36994;
+var G__37098 = chunk__36999;
+var G__37099 = count__37000;
+var G__37100 = (i__37001 + (1));
+seq__36994 = G__37097;
+chunk__36999 = G__37098;
+count__37000 = G__37099;
+i__37001 = G__37100;
 continue;
 } else {
-var temp__5823__auto__ = cljs.core.seq(seq__40441);
+var temp__5823__auto__ = cljs.core.seq(seq__36994);
 if(temp__5823__auto__){
-var seq__40441__$1 = temp__5823__auto__;
-if(cljs.core.chunked_seq_QMARK_(seq__40441__$1)){
-var c__5525__auto__ = cljs.core.chunk_first(seq__40441__$1);
-var G__40547 = cljs.core.chunk_rest(seq__40441__$1);
-var G__40548 = c__5525__auto__;
-var G__40549 = cljs.core.count(c__5525__auto__);
-var G__40550 = (0);
-seq__40441 = G__40547;
-chunk__40446 = G__40548;
-count__40447 = G__40549;
-i__40448 = G__40550;
+var seq__36994__$1 = temp__5823__auto__;
+if(cljs.core.chunked_seq_QMARK_(seq__36994__$1)){
+var c__5525__auto__ = cljs.core.chunk_first(seq__36994__$1);
+var G__37101 = cljs.core.chunk_rest(seq__36994__$1);
+var G__37102 = c__5525__auto__;
+var G__37103 = cljs.core.count(c__5525__auto__);
+var G__37104 = (0);
+seq__36994 = G__37101;
+chunk__36999 = G__37102;
+count__37000 = G__37103;
+i__37001 = G__37104;
 continue;
 } else {
-var map__40490 = cljs.core.first(seq__40441__$1);
-var map__40490__$1 = cljs.core.__destructure_map(map__40490);
-var tiles = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__40490__$1,new cljs.core.Keyword(null,"tiles","tiles",178505240));
-var seq__40442_40551 = cljs.core.seq(tiles);
-var chunk__40443_40552 = null;
-var count__40444_40553 = (0);
-var i__40445_40554 = (0);
+var map__37040 = cljs.core.first(seq__36994__$1);
+var map__37040__$1 = cljs.core.__destructure_map(map__37040);
+var tiles = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__37040__$1,new cljs.core.Keyword(null,"tiles","tiles",178505240));
+var seq__36995_37105 = cljs.core.seq(tiles);
+var chunk__36996_37106 = null;
+var count__36997_37107 = (0);
+var i__36998_37108 = (0);
 while(true){
-if((i__40445_40554 < count__40444_40553)){
-var map__40510_40555 = chunk__40443_40552.cljs$core$IIndexed$_nth$arity$2(null, i__40445_40554);
-var map__40510_40556__$1 = cljs.core.__destructure_map(map__40510_40555);
-var id_40557 = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__40510_40556__$1,new cljs.core.Keyword(null,"id","id",-1388402092));
-var x_40558 = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__40510_40556__$1,new cljs.core.Keyword(null,"x","x",2099068185));
-var y_40559 = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__40510_40556__$1,new cljs.core.Keyword(null,"y","y",-1757859776));
-var sprite_40560 = app.frontend.ui.battlefield.sprites.create_map_tile_sprite(texture,id_40557,x_40558,y_40559);
-console.log(cljs.core.clj__GT_js(sprite_40560));
-
-map_container.addChild(sprite_40560);
+if((i__36998_37108 < count__36997_37107)){
+var map__37047_37109 = chunk__36996_37106.cljs$core$IIndexed$_nth$arity$2(null, i__36998_37108);
+var map__37047_37110__$1 = cljs.core.__destructure_map(map__37047_37109);
+var id_37111 = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__37047_37110__$1,new cljs.core.Keyword(null,"id","id",-1388402092));
+var x_37112 = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__37047_37110__$1,new cljs.core.Keyword(null,"x","x",2099068185));
+var y_37113 = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__37047_37110__$1,new cljs.core.Keyword(null,"y","y",-1757859776));
+var sprite_37114 = app.frontend.ui.battlefield.sprites.create_map_tile_sprite(texture,id_37111,x_37112,y_37113);
+map_container.addChild(sprite_37114);
 
 
-var G__40561 = seq__40442_40551;
-var G__40562 = chunk__40443_40552;
-var G__40563 = count__40444_40553;
-var G__40564 = (i__40445_40554 + (1));
-seq__40442_40551 = G__40561;
-chunk__40443_40552 = G__40562;
-count__40444_40553 = G__40563;
-i__40445_40554 = G__40564;
+var G__37115 = seq__36995_37105;
+var G__37116 = chunk__36996_37106;
+var G__37117 = count__36997_37107;
+var G__37118 = (i__36998_37108 + (1));
+seq__36995_37105 = G__37115;
+chunk__36996_37106 = G__37116;
+count__36997_37107 = G__37117;
+i__36998_37108 = G__37118;
 continue;
 } else {
-var temp__5823__auto___40565__$1 = cljs.core.seq(seq__40442_40551);
-if(temp__5823__auto___40565__$1){
-var seq__40442_40566__$1 = temp__5823__auto___40565__$1;
-if(cljs.core.chunked_seq_QMARK_(seq__40442_40566__$1)){
-var c__5525__auto___40567 = cljs.core.chunk_first(seq__40442_40566__$1);
-var G__40568 = cljs.core.chunk_rest(seq__40442_40566__$1);
-var G__40569 = c__5525__auto___40567;
-var G__40570 = cljs.core.count(c__5525__auto___40567);
-var G__40571 = (0);
-seq__40442_40551 = G__40568;
-chunk__40443_40552 = G__40569;
-count__40444_40553 = G__40570;
-i__40445_40554 = G__40571;
+var temp__5823__auto___37119__$1 = cljs.core.seq(seq__36995_37105);
+if(temp__5823__auto___37119__$1){
+var seq__36995_37120__$1 = temp__5823__auto___37119__$1;
+if(cljs.core.chunked_seq_QMARK_(seq__36995_37120__$1)){
+var c__5525__auto___37121 = cljs.core.chunk_first(seq__36995_37120__$1);
+var G__37122 = cljs.core.chunk_rest(seq__36995_37120__$1);
+var G__37123 = c__5525__auto___37121;
+var G__37124 = cljs.core.count(c__5525__auto___37121);
+var G__37125 = (0);
+seq__36995_37105 = G__37122;
+chunk__36996_37106 = G__37123;
+count__36997_37107 = G__37124;
+i__36998_37108 = G__37125;
 continue;
 } else {
-var map__40511_40572 = cljs.core.first(seq__40442_40566__$1);
-var map__40511_40573__$1 = cljs.core.__destructure_map(map__40511_40572);
-var id_40574 = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__40511_40573__$1,new cljs.core.Keyword(null,"id","id",-1388402092));
-var x_40575 = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__40511_40573__$1,new cljs.core.Keyword(null,"x","x",2099068185));
-var y_40576 = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__40511_40573__$1,new cljs.core.Keyword(null,"y","y",-1757859776));
-var sprite_40577 = app.frontend.ui.battlefield.sprites.create_map_tile_sprite(texture,id_40574,x_40575,y_40576);
-console.log(cljs.core.clj__GT_js(sprite_40577));
-
-map_container.addChild(sprite_40577);
+var map__37048_37126 = cljs.core.first(seq__36995_37120__$1);
+var map__37048_37127__$1 = cljs.core.__destructure_map(map__37048_37126);
+var id_37128 = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__37048_37127__$1,new cljs.core.Keyword(null,"id","id",-1388402092));
+var x_37129 = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__37048_37127__$1,new cljs.core.Keyword(null,"x","x",2099068185));
+var y_37130 = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__37048_37127__$1,new cljs.core.Keyword(null,"y","y",-1757859776));
+var sprite_37131 = app.frontend.ui.battlefield.sprites.create_map_tile_sprite(texture,id_37128,x_37129,y_37130);
+map_container.addChild(sprite_37131);
 
 
-var G__40578 = cljs.core.next(seq__40442_40566__$1);
-var G__40579 = null;
-var G__40580 = (0);
-var G__40581 = (0);
-seq__40442_40551 = G__40578;
-chunk__40443_40552 = G__40579;
-count__40444_40553 = G__40580;
-i__40445_40554 = G__40581;
+var G__37132 = cljs.core.next(seq__36995_37120__$1);
+var G__37133 = null;
+var G__37134 = (0);
+var G__37135 = (0);
+seq__36995_37105 = G__37132;
+chunk__36996_37106 = G__37133;
+count__36997_37107 = G__37134;
+i__36998_37108 = G__37135;
 continue;
 }
 } else {
@@ -199,14 +203,14 @@ continue;
 break;
 }
 
-var G__40582 = cljs.core.next(seq__40441__$1);
-var G__40583 = null;
-var G__40584 = (0);
-var G__40585 = (0);
-seq__40441 = G__40582;
-chunk__40446 = G__40583;
-count__40447 = G__40584;
-i__40448 = G__40585;
+var G__37136 = cljs.core.next(seq__36994__$1);
+var G__37137 = null;
+var G__37138 = (0);
+var G__37139 = (0);
+seq__36994 = G__37136;
+chunk__36999 = G__37137;
+count__37000 = G__37138;
+i__37001 = G__37139;
 continue;
 }
 } else {

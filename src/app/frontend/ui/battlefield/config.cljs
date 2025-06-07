@@ -5,6 +5,8 @@
 
 (def spritesheet-path "/assets/spritesheet.png")
 (def placeholder-path "/assets/images/placeholder.png")
-(def warrior-sprite-path "/assets/images/warrior.png")
+(def warrior-path "/assets/images/warrior.png")
+(def medic-path "/assets/images/medic.png")
+(def wizard-path "/assets/images/wizard.png")
 
 (def move-overlay-radius 3)

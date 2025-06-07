@@ -4,12 +4,12 @@ if((typeof app !== 'undefined') && (typeof app.frontend !== 'undefined') && (typ
 app.frontend.ui.core.app_state = reagent.core.atom.cljs$core$IFn$_invoke$arity$1(new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"screen","screen",1990059748),new cljs.core.Keyword(null,"menu","menu",352255198)], null));
 }
 app.frontend.ui.core.root_component = (function app$frontend$ui$core$root_component(){
-var map__28001 = cljs.core.deref(app.frontend.ui.core.app_state);
-var map__28001__$1 = cljs.core.__destructure_map(map__28001);
-var screen__$1 = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__28001__$1,new cljs.core.Keyword(null,"screen","screen",1990059748));
-var G__28002 = screen__$1;
-var G__28002__$1 = (((G__28002 instanceof cljs.core.Keyword))?G__28002.fqn:null);
-switch (G__28002__$1) {
+var map__28251 = cljs.core.deref(app.frontend.ui.core.app_state);
+var map__28251__$1 = cljs.core.__destructure_map(map__28251);
+var screen__$1 = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__28251__$1,new cljs.core.Keyword(null,"screen","screen",1990059748));
+var G__28252 = screen__$1;
+var G__28252__$1 = (((G__28252 instanceof cljs.core.Keyword))?G__28252.fqn:null);
+switch (G__28252__$1) {
 case "menu":
 return new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [app.frontend.ui.main_menu.main_menu,(function (){
 return cljs.core.swap_BANG_.cljs$core$IFn$_invoke$arity$4(app.frontend.ui.core.app_state,cljs.core.assoc,new cljs.core.Keyword(null,"screen","screen",1990059748),new cljs.core.Keyword(null,"game","game",-441523833));

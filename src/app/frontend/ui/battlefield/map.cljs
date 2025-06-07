@@ -4,10 +4,24 @@
             [app.frontend.ui.battlefield.sprites :as sprites]
             [reagent.core :as r]))
 
+(def walkable-ids
+  #{"10" "11" "12" "19" "23" "26" "27" "28" "29"})
+
+(defn mark-walkable [tile]
+  (assoc tile :walkable? (contains? walkable-ids (:id tile))))
+
+(defn mark-walkable-layer [layer]
+  (update layer :tiles #(mapv mark-walkable %)))
+
 (defn load-map! []
   (-> (js/fetch "/assets/map.json")
       (.then #(.json %))
-      (.then #(reset! state/map-data (js->clj % :keywordize-keys true)))
+      (.then
+        (fn [raw-data]
+          (let [data (js->clj raw-data :keywordize-keys true)
+                layers (:layers data)
+                updated-layers (mapv mark-walkable-layer layers)]
+            (reset! state/map-data (assoc data :layers updated-layers)))))
       (.catch #(js/console.error "Failed to load map:" %))))
 
 (defn calc-map-dimensions [{:keys [tileSize layers]}]
@@ -21,7 +35,6 @@
   (doseq [{:keys [tiles]} layers
           {:keys [id x y]} tiles]
     (let [sprite (sprites/create-map-tile-sprite texture id x y)]
-      (js/console.log (clj->js sprite))
       (.addChild ^js map-container sprite))))
 
 (defn setup-drag-handlers! [container screen-width screen-height map-width map-height]
