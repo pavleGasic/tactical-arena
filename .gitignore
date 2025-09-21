@@ -55,26 +55,23 @@ ta_backend/target/
 ta_backend/.cpcache/
 ta_backend/.lsp/
 ta_backend/.clj-kondo/
+ta_backend//classes
+ta_backend//checkouts
+ta_backend/profiles.clj
+ta_backend/pom.xml
+ta_backend/pom.xml.asc
+ta_backend/*.jar
+ta_backend/*.class
+ta_backend//.lein-*
+ta_backend/.nrepl-port
+ta_backend/.prepl-port
+ta_backend/.hgignore
+ta_backend/.hg/
 
 # Backend (if Java / JVM in general)
 *.class
 *.war
 *.ear
-
-# Backend (if .NET)
-bin/
-obj/
-*.user
-*.suo
-*.cache
-*.pdb
-*.mdb
-*.dbmdl
-*.ldf
-*.mdf
-*.log
-*.vs/
-project.lock.json
 
 # =========================
 # Environment / Secrets
