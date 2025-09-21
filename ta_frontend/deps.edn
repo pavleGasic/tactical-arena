@@ -1,0 +1,13 @@
+{:deps
+ {reagent/reagent      {:mvn/version "1.2.0"}
+  thheller/shadow-cljs {:mvn/version "2.28.10"}
+  }
+ :aliases
+ {:dev
+  {:extra-deps  {org.clojure/clojurescript {:mvn/version "1.11.60"}
+                 org.clojure/clojure       {:mvn/version "1.11.1"}
+                 midje/midje               {:mvn/version "1.10.10"}
+                 com.bhauman/doo           {:mvn/version "0.1.11"}}
+   :main-opts   ["-m" "doo.runner"]
+   :extra-paths ["dev"]}}
+ }

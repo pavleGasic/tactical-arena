@@ -1,19 +1,87 @@
-.idea
+# =========================
+# Global ignores
+# =========================
+.DS_Store
+Thumbs.db
+*.log
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# Editor/IDE files
+.idea/
+.vscode/
 *.iml
-.shadow-cljs/
-node_modules/
-package-lock.json
-pom.xml
-pom.xml.asc
-*.jar
-*.class
-/lib/
-/classes/
+
+# OS-specific
+ehthumbs.db
+Icon?
+._*
+
+# =========================
+# Clojure / Leiningen / Deps
+# =========================
 /target/
+/classes/
 /checkouts/
-.lein-deps-sum
-.lein-repl-history
-.lein-plugins/
-.lein-failures
+/out/
+/.cljs_node_repl/
+/.cljs_rhino_repl/
+/repl-port
 .nrepl-port
 .cpcache/
+.lsp/
+.clj-kondo/
+.shadow-cljs/
+*.jar
+
+# =========================
+# Node / Shadow CLJS Frontend
+# =========================
+ta_frontend/node_modules/
+ta_frontend/dist/
+ta_frontend/out/
+ta_frontend/public/js/
+ta_frontend/public/build/
+ta_frontend/package-lock.json
+ta_frontend/yarn.lock
+ta_frontend.pnpm-debug.log
+
+# =========================
+# Backend (if Clojure)
+# =========================
+ta_backend/target/
+ta_backend/.cpcache/
+ta_backend/.lsp/
+ta_backend/.clj-kondo/
+
+# Backend (if Java / JVM in general)
+*.class
+*.war
+*.ear
+
+# Backend (if .NET)
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.pdb
+*.mdb
+*.dbmdl
+*.ldf
+*.mdf
+*.log
+*.vs/
+project.lock.json
+
+# =========================
+# Environment / Secrets
+# =========================
+*.env
+.env.*
+.envrc
+/secrets/
+/config/local.edn
+
