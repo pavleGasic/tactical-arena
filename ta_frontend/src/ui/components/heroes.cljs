@@ -1,4 +1,4 @@
-(ns ui.components.characters)
+(ns ui.components.heroes)
 
 (defn base-style [size]
   {:position        "relative"

@@ -1,27 +1,27 @@
 (ns ui.battlefield.gameplay.home-turn
   (:require [ui.battlefield.move-overlay :as mo]
-            [ui.battlefield.character :as character]
+            [ui.api.game-api :as game-api]
             [ui.battlefield.state :as state]))
 
-(defn get-home-character [id]
-  (some #(when (= (:id %) id) %) @state/home-characters))
+(defn get-home-heroes [id]
+  (some #(when (= (:id %) id) %) @state/home-heroes))
 
-(defn perform-move-character!
-  "Perform moving character to new position and clean placeholder layer"
-  [char new-position]
-  (swap! state/turn! assoc :selected-id (:id char) :phase :move)
-  (character/move-character (:x new-position) (:y new-position) state/home-characters)
-  (swap! state/turn! assoc :selected-id (:id char) :phase :attack)
-  (mo/clear-placeholder-sprites!))
+(defn perform-move-hero!
+  "Perform moving hero to new position and clean placeholder layer"
+  [hero new-position]
+  (let [hero-id (name (:type hero))
+        new-x (:x new-position)
+        new-y (:y new-position)]
+    (game-api/move-hero hero-id new-x new-y)))
 
-(defn select-character!
+(defn select-hero!
   "Handling click event on home character"
-  [character-id]
-  (let [character (get-home-character character-id)]
+  [hero-id]
+  (let [hero (get-home-heroes hero-id)]
     (mo/clear-placeholder-sprites!)
-    (swap! state/home-characters
+    (swap! state/home-heroes
            #(mapv
-              (fn [c]
-                (assoc c :selected?
-                         (= (:id c) character-id))) %))
-    (mo/display-move-overlay character (:placeholder @state/assets) perform-move-character!)))
+              (fn [h]
+                (assoc h :selected?
+                         (= (:id h) hero-id))) %))
+    (mo/display-move-overlay hero (:placeholder @state/assets) perform-move-hero!)))

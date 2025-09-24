@@ -5,7 +5,7 @@
 
 (def spritesheet-path "/assets/spritesheet.png")
 (def placeholder-path "/assets/images/placeholder.png")
-(def character-paths
+(def hero-paths
   {:warrior "/assets/images/warrior.png"
    :medic   "/assets/images/medic.png"
    :wizard  "/assets/images/wizard.png"})

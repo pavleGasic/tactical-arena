@@ -1,7 +1,6 @@
 (ns ui.battlefield.gameplay.core
   (:require [ui.battlefield.state :as state]
-            [ui.battlefield.move-overlay :as mo]
-            [ui.battlefield.character :as character]
+            [ui.battlefield.hero :as hero]
             [ui.battlefield.gameplay.home-turn :as home-turn]))
 
 (def ranges {:warrior 1 :wizard 3 :medic 3})
@@ -23,15 +22,15 @@
   "Returns enemy team atom, from current move perspective"
   []
   (if (= (:current @state/turn!) :home)
-    @state/opponent-characters
-    @state/home-characters))
+    @state/opponent-heroes
+    @state/home-heroes))
 
 (defn home-chars
   "Returns home team atom, from current move perspective"
   []
   (if (= (:current @state/turn!) :home)
-    @state/home-characters
-    @state/opponent-characters))
+    @state/home-heroes
+    @state/opponent-heroes))
 
 (defn start-turn!
   "Starting new turn"
@@ -54,21 +53,23 @@
 (defn init-characters
   "Render both, home and opponent characters on initial positions"
   []
-  (character/render-characters!
-    state/home-characters :home)
-  (character/render-characters!
-    state/opponent-characters :opponent))
+  (hero/render-heroes!
+    state/home-heroes :home)
+  (hero/render-heroes!
+    state/opponent-heroes :opponent))
 
 (defn attach-character-pointer-listener!
   "Attach pointer event listener to each home character"
   []
-  (doseq [character @state/home-characters]
+  (doseq [character @state/home-heroes]
     (let [sprite (:sprite character)]
       (set! ^js (.-eventMode sprite) "dynamic")
       (set! ^js (.-buttonMode sprite) true)
       (.on sprite "pointerdown"
            (fn [_]
-             (home-turn/select-character! (:id character))))
+             (if (= (:phase @state/turn!) :select)
+               (home-turn/select-hero! (:id character)))
+             ))
       )))
 
 (defn start-game

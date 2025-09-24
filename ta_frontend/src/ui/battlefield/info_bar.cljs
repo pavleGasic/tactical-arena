@@ -1,24 +1,24 @@
 (ns ui.battlefield.info-bar
   (:require [ui.battlefield.state :as state]
             [ui.battlefield.consts :as consts]
-            [ui.components.characters :as characters]))
+            [ui.components.heroes :as heroes]))
 
-(def character-icons
-  {:warrior characters/display-warrior
-   :wizard  characters/display-wizard
-   :medic   characters/display-medic})
+(def hero-icons
+  {:warrior heroes/display-warrior
+   :wizard  heroes/display-wizard
+   :medic   heroes/display-medic})
 
-(def character-colors
+(def hero-colors
   {:warrior "is-primary"
    :wizard  "is-warning"
    :medic   "is-success"})
 
-(defn character-info [c]
+(defn hero-info [c]
   (let [hp (:health c)
         max-hp (:max-health c)
         percent (js/Math.floor (* 100 (/ hp max-hp)))
-        icon-fn (get character-icons (:type c))
-        bar-color (get character-colors (:type c))]
+        icon-fn (get hero-icons (:type c))
+        bar-color (get hero-colors (:type c))]
     [:div {:style {:display "flex" :align-items "center" :gap "5px"}}
      (when icon-fn (icon-fn 48))
      [:div {:style {:display "flex" :flex-direction "column" :align-items "flex-start"}}
@@ -28,7 +28,7 @@
                   :style {:width "100px" :height "30px"}}]
       [:p {:style {:margin "0" :font-size "10px"}} (str hp "/" max-hp "HP")]]]))
 
-(defn side-info-bar [characters side title]
+(defn side-info-bar [heroes side title]
   (let [pos-style (case side
                     :left-bottom {:bottom "10px" :left "10px"}
                     :right-top   {:top "10px" :right "10px"})
@@ -47,10 +47,10 @@
                    {:margin "5px 5px" :font-size "18px"}
                    title-color)}
       title]
-     (for [c @characters]
-       ^{:key (:id c)} [character-info c])]))
+     (for [c @heroes]
+       ^{:key (:id c)} [hero-info c])]))
 
 (defn info-bar []
   [:<>
-   [side-info-bar state/home-characters :left-bottom "Home"]
-   [side-info-bar state/opponent-characters :right-top "Opponent"]])
+   [side-info-bar state/home-heroes :left-bottom "Home"]
+   [side-info-bar state/opponent-heroes :right-top "Opponent"]])

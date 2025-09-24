@@ -38,10 +38,6 @@
          (when @on-resize
            (.removeEventListener js/window "resize" @on-resize)))
 
-       :component-did-update
-       (fn []
-         )
-
        :reagent-render
        (fn []
          [:div {:style {:position "relative"

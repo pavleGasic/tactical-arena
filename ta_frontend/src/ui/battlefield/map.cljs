@@ -6,14 +6,14 @@
             ["pixi.js" :refer [Application Assets Texture Sprite Rectangle Container SCALE_MODES]]))
 
 
-(def walkable-sprite-ids
-  "Based on /public/assets/spritesheet.png defined sprite numbers on witch character can walk"
+(def walkable-tile-ids
+  "Based on /public/assets/spritesheet.png defined sprite numbers on witch hero can walk"
   #{"10" "11" "12" "19" "23" "26" "27" "28" "29"})
 
 (defn mark-walkable-tile
   "Mark `tile` :walkable? if have id in `walkable-sprite-ids`"
   [tile]
-  (assoc tile :walkable? (contains? walkable-sprite-ids (:id tile))))
+  (assoc tile :walkable? (contains? walkable-tile-ids (:id tile))))
 
 (defn mark-walkable-layer
   "Update `layer` with :walkable? tiles"

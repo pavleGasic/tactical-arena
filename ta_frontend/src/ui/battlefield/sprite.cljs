@@ -8,8 +8,8 @@
   (.load Assets path))
 
 (defn init-assets []
-  "Load all character and placeholder textures, store in state/assets."
-  (let [all-paths (assoc consts/character-paths :placeholder consts/placeholder-path :spritesheet consts/spritesheet-path)
+  "Load all hero and placeholder textures, store in state/assets."
+  (let [all-paths (assoc consts/hero-paths :placeholder consts/placeholder-path :spritesheet consts/spritesheet-path)
         paths (vals all-paths)]
     (-> (js/Promise.all (clj->js (map load-asset paths)))
         (.then (fn [_]
@@ -22,7 +22,7 @@
                    (set! (.-scaleMode (.-baseTexture tex)) SCALE_MODES.NEAREST)))))))
 
 (defn animate-move!
-  "Animate character (`sprite`) move from (`from-x`, `from-y`) to (`to-x`, `to-y`)"
+  "Animate hero (`sprite`) move from (`from-x`, `from-y`) to (`to-x`, `to-y`)"
   [sprite from-x from-y to-x to-y]
   (let [start-time (.now js/performance)
         pixel-from-x (* from-x consts/tile-size consts/tile-scale)
@@ -51,17 +51,17 @@
               (set! (.-y sprite) (+ (.-y sprite) (- offset @float-offset)))
               (reset! float-offset offset))))))
 
-(defn create-character-sprite
-  "Create character sprite from `texture`"
-  [character texture side]
+(defn create-hero-sprite
+  "Create hero sprite from `texture`"
+  [hero texture side]
   (let [sprite (Sprite. texture)
         ph-color  (case side
                  :home     consts/home-color
                  :opponent consts/opponent-color
                  0x000000)
         ph-sprite (Sprite. (:placeholder @state/assets))]
-    (set! (.-x sprite) (* (:x (:position character)) consts/tile-size consts/tile-scale))
-    (set! (.-y sprite) (* (:y (:position character)) consts/tile-size consts/tile-scale))
+    (set! (.-x sprite) (* (:x (:position hero)) consts/tile-size consts/tile-scale))
+    (set! (.-y sprite) (* (:y (:position hero)) consts/tile-size consts/tile-scale))
     (set! (.-scale.x sprite) consts/tile-scale)
     (set! (.-scale.y sprite) consts/tile-scale)
 

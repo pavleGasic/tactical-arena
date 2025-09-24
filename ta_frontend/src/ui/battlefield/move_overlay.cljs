@@ -4,9 +4,9 @@
             [ui.battlefield.state :as state]))
 
 (defn occupied-tile?
-  "Return true if tile is not occupied and character can move to this tile"
-  [x y characters]
-  (some #(and (= (:x (:position %)) x) (= (:y (:position %)) y)) characters))
+  "Return true if tile is not occupied and hero can move to this tile"
+  [x y heroes]
+  (some #(and (= (:x (:position %)) x) (= (:y (:position %)) y)) heroes))
 
 (defn walkable-tile? [x y map-data]
   (some (fn [layer]
@@ -14,8 +14,8 @@
                   (and (= (:x tile) x)
                        (= (:y tile) y)
                        (:walkable? tile)
-                       (not (occupied-tile? x y @state/home-characters))
-                       (not (occupied-tile? x y @state/opponent-characters))))
+                       (not (occupied-tile? x y @state/home-heroes))
+                       (not (occupied-tile? x y @state/opponent-heroes))))
                 (:tiles layer)))
         (:layers map-data)))
 
@@ -27,10 +27,10 @@
   (reset! state/overlay-placeholders []))
 
 (defn display-move-overlay
-  "Display available moves with visible placeholders (`texture`) based on `character` position"
-  [character texture perform-move!]
+  "Display available moves with visible placeholders (`texture`) based on `hero` position"
+  [hero texture perform-move!]
   (let [radius consts/move-overlay-radius
-        {:keys [x y]} (:position character)]
+        {:keys [x y]} (:position hero)]
     (doseq [dx (range (- x radius) (+ x radius 1))
             dy (range (- y radius) (+ y radius 1))
             :when (and (not= [dx dy] [x y])
@@ -41,6 +41,6 @@
         (set! (.-buttonMode sprite) true)
         (.on sprite "pointerdown"
              (fn [_]
-               (perform-move! character (state/Position. dx dy))))
+               (perform-move! hero (state/Position. dx dy))))
         (.addChild ^js @state/map-container sprite)
         (swap! state/overlay-placeholders conj sprite)))))
