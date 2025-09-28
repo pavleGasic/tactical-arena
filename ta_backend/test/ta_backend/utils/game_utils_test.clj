@@ -59,13 +59,12 @@
             map-data (for [x (range -1 2) y (range -1 2)] {:x x :y y :walkable? true})]
         (set (gu/valid-moves hero gs map-data))
         => (set [{:x -1 :y -1} {:x -1 :y 0} {:x -1 :y 1}
-                 {:x 0 :y -1}  {:x 0 :y 0}  {:x 0 :y 1}
+                 {:x 0 :y -1}  {:x 0 :y 1}
                  {:x 1 :y -1}  {:x 1 :y 0}  {:x 1 :y 1}])))
 
-(fact "available-actions returns attack and heal options"
-      (let [hero {:type :warrior :position (pos 0 0)}
-            player-heroes {:p1 {:type :warrior :position (pos 1 0) :hp 10 :max-hp 10}}
-            bot-heroes {:b1 {:type :medic :position (pos 0 0) :hp 5 :max-hp 10}}]
-        (map :type (gu/available-actions hero {:player-heroes player-heroes
-                                               :bot-heroes bot-heroes}))
-        => (just [:attack :heal] :in-any-order true)))
+(fact "available-actions returns only valid actions for hero type"
+      (let [hero {:type :medic :position (pos 0 0)}
+            ally-heroes {:p1 {:type :warrior :position (pos 1 0) :hp 5 :max-hp 10}}
+            target-heroes {:b1 {:type :wizard :position (pos 2 0) :hp 10 :max-hp 10}}]
+        (map :type (gu/available-actions hero target-heroes ally-heroes))
+        => (just [:heal] :in-any-order true)))

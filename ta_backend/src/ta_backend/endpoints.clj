@@ -44,14 +44,30 @@
             :parameters {:body {:hero-id s/Str
                                 :new-x   s/Int
                                 :new-y   s/Int}}
-            :responses  {200 {:body {:success      s/Bool
-                                     :updated-hero s/Any}}}
+            :responses  {200 {:body {:success           s/Bool
+                                     :updated-hero      s/Any
+                                     :available-actions s/Any}}}
             :handler    gh/handle-game-turn-move}}]
+   ["/game/turn/action"
+    {:post {:summary    "Perform a action for the current turn"
+            :parameters {:body {:action s/Str
+                                :from   s/Any
+                                :to     s/Any}}
+            :responses  {200 {:body {:success s/Bool
+                                     :action  s/Str
+                                     :from    s/Any
+                                     :to-home s/Any
+                                     :to-bot  s/Any}}}
+            :handler    gh/handle-game-turn-action}}]
    ["/game/turn/end"
     {:get {:summary   "End player turn and return bot turn"
-           :responses {200 {:body {:success               s/Bool
-                                   :bot-updated-heroes    s/Any
-                                   :player-updated-heroes s/Any}}}
+           :responses {200 {:body {:success          s/Bool
+                                   :bot-updated-hero s/Any
+                                   :bot-action       s/Any
+                                   :winner           s/Any
+                                   :end              s/Any
+                                   :bot-target        s/Any
+                                   :home-target       s/Any}}}
            :handler   gh/handle-game-turn-end}}]
    ["/swagger.json" {:get {:no-doc  true
                            :handler (swagger/create-swagger-handler)}}]

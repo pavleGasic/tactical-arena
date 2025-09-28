@@ -1,12 +1,31 @@
 (ns ui.battlefield.hero
   (:require [ui.battlefield.sprite :as sprite]
-            [ui.battlefield.state :as state]))
+            [ui.battlefield.state :as state]
+            [ui.service.utils :as utils]
+            [cljs.core.async :refer [<! go]]
+            [ui.battlefield.move-overlay :as mo]))
 
+(defn actions-by-hero-type [available-actions]
+  (group-by #(get-in % [:from :type]) available-actions))
 
-(defn start-attack-phase
-  "Changing phase to attack!"
-  []
-  (swap! state/turn! #(assoc % :phase :attack)))
+(defn attach-actions-to-heroes [heroes available-actions]
+  (let [actions-map (actions-by-hero-type available-actions)]
+    (mapv (fn [hero]
+            (let [hero-type (name (:type hero))
+                  hero-actions (get actions-map hero-type [])]
+              (assoc hero :available-actions hero-actions)))
+          heroes)))
+
+(defn start-action-phase
+  "Highlight all player heroes that can perform an action."
+  [available-actions]
+  (swap! state/turn! #(assoc % :phase :action))
+  (reset! state/home-heroes
+          (attach-actions-to-heroes @state/home-heroes available-actions))
+
+  (mo/remove-sprite-glow-overlay! :bot)
+  (mo/display-home-sprite-glow-overlay))
+
 
 (defn move-hero
   "Action for clicking on placeholder, moving hero to (`dx`, `dy`)"
@@ -24,19 +43,49 @@
                      h))
                  hs))))
 
+(defn do-action
+  "Animate and apply action for a single target hero, then end turn."
+  [to to-heroes action-type is-player-action?]
+  (go
+    (let [hero (some #(when (= (:type %) (utils/get-hero-type (:type to))) %) @to-heroes)]
+      (when hero
+        (<! (sprite/animate-action hero action-type))
+
+        (swap! to-heroes
+               (fn [hs]
+                 (mapv (fn [h]
+                         (if (= (:type h) (:type hero))
+                           (let [updated (assoc h :health (:hp to))
+                                 hero-sprite (:sprite updated)]
+                             (if (<= (:health updated) 0)
+                               (do
+                                 (sprite/remove-sprite hero-sprite)
+                                 (assoc updated :sprite nil :position (state/->Position 0 0)))
+                               updated))
+                           h))
+                       hs)))
+
+        (when is-player-action?
+          (ui.battlefield.gameplay.core/end-turn!)
+          (mo/remove-sprite-glow-overlay! :bot)
+          (ui.api.game-api/end-turn))))))
+
+
 (defn render-heroes!
   "Render every hero onto `map-container` and mutate
   the atom so each hero now carries its `sprite`"
   [heroes side]
   (doseq [h @heroes]
-    (js/console.log (clj->js h))
-    (let [tex (@state/assets (:type h))
-          sprite (sprite/create-hero-sprite h tex side)]
+    (let [hero-tex (@state/assets (:type h))
+          weapon-tex (@state/assets (utils/get-weapon-type (:type h)))
+          created-hero (sprite/create-hero-sprite h hero-tex weapon-tex side)
+          hero-sprite (:hero-sprite created-hero)
+          weapon-sprite (:weapon-sprite created-hero)]
       (swap! heroes
              #(mapv (fn [hs]
                       (if (= (:id hs) (:id h))
-                        (assoc hs :sprite sprite)
+                        (assoc hs :sprite hero-sprite :weapon-sprite weapon-sprite)
                         hs))
                     %))
-      (.addChild ^js @state/map-container sprite))))
+      (.addChild ^js @state/map-container hero-sprite))))
 

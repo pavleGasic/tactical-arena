@@ -28,13 +28,26 @@
                   :style {:width "100px" :height "30px"}}]
       [:p {:style {:margin "0" :font-size "10px"}} (str hp "/" max-hp "HP")]]]))
 
-(defn side-info-bar [heroes side title]
+(defn turns-progress [side turns]
+  (let [max-turns 5
+        percent (* 100 (/ turns max-turns))
+        bar-color (if (= side :home) "is-success" "is-error")
+        label "Target"]
+    [:div {:style {:margin-top "5px"}}
+     [:p {:style {:margin "0" :font-size "12px" :font-weight "bold"}} label]
+     [:progress {:class (str "nes-progress " bar-color)
+                 :value percent
+                 :max   100
+                 :style {:width "160px" :height "30px"}}]
+     [:p {:style {:margin "0" :font-size "10px"}} (str turns "/" max-turns " turns")]]))
+
+(defn side-info-bar [heroes side title turns-atom]
   (let [pos-style (case side
-                    :left-bottom {:bottom "10px" :left "10px"}
-                    :right-top   {:top "10px" :right "10px"})
+                    :home {:bottom "10px" :left "10px"}
+                    :bot   {:top "10px" :right "10px"})
         title-color (case side
-                    :left-bottom {:color consts/home-color}
-                    :right-top   {:color consts/opponent-color})]
+                      :home {:color consts/home-color}
+                      :bot   {:color consts/opponent-color})]
     [:div {:class "nes-container is-rounded"
            :style (merge {:position "absolute"
                           :display  "flex"
@@ -48,9 +61,10 @@
                    title-color)}
       title]
      (for [c @heroes]
-       ^{:key (:id c)} [hero-info c])]))
+       ^{:key (:id c)} [hero-info c])
+     [turns-progress side @turns-atom]]))
 
 (defn info-bar []
   [:<>
-   [side-info-bar state/home-heroes :left-bottom "Home"]
-   [side-info-bar state/opponent-heroes :right-top "Opponent"]])
+   [side-info-bar state/home-heroes :home "Home" state/home-turns-in-target]
+   [side-info-bar state/bot-heroes :bot "Opponent" state/bot-turns-in-target]])

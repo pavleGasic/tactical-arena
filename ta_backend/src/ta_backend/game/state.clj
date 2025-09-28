@@ -1,10 +1,7 @@
-(ns ta-backend.game.state)
-
-(defonce warrior-max-health 1000)
-(defonce medic-max-health 600)
-(defonce wizard-max-health 400)
+(ns ta-backend.game.state
+  (:require [ta-backend.game.consts :as consts]))
 (defonce game-map (atom nil))
-(defrecord Hero [type position hp max-hp can-attack? can-heal?])
+(defrecord Hero [type position hp max-hp])
 (defrecord Bot [level])
 (defrecord Position [x y])
 (defrecord GameState [player-heroes bot-heroes bot turn phase])
@@ -12,14 +9,16 @@
 (defonce game-state (atom
                       (->GameState {} {} nil nil nil)))
 
+(defrecord Action [type from to])
+
 (defn create-warrior
   [position]
-  (->Hero :warrior position warrior-max-health warrior-max-health nil nil))
+  (->Hero :warrior position consts/warrior-max-health consts/warrior-max-health))
 
 (defn create-wizard
   [position]
-  (->Hero :wizard position wizard-max-health wizard-max-health nil nil))
+  (->Hero :wizard position consts/wizard-max-health consts/wizard-max-health))
 
 (defn create-medic
   [position]
-  (->Hero :medic position medic-max-health medic-max-health nil nil))
+  (->Hero :medic position consts/medic-max-health consts/medic-max-health))

@@ -12,7 +12,8 @@
        :menu [display-main-menu]
        :game [display-battlefield]
        [:div "Unknown screen"]))
-   [dialog/error-dialog]])
+   [dialog/error-dialog]
+   [dialog/info-dialog]])
 
 (defn init []
   (rdom/render [root-component]

@@ -2,6 +2,8 @@
   (:require [ui.battlefield.state :as state]
             [ui.battlefield.consts :as consts]
             [ui.battlefield.sprite :as sprite]
+            [ui.battlefield.move-overlay :as mo]
+            [ui.battlefield.gameplay.home-turn :as ht]
             [reagent.core :as r]
             ["pixi.js" :refer [Application Assets Texture Sprite Rectangle Container SCALE_MODES]]))
 
@@ -53,6 +55,16 @@
   (doseq [{:keys [tiles]} layers
           {:keys [id x y]} tiles]
     (let [sprite (sprite/create-map-tile-sprite texture id x y)]
+      (set! (.-eventMode sprite) "dynamic")
+      (set! (.-buttonMode sprite) true)
+      (.on sprite "pointerdown"
+           (fn [_]
+             (case (:phase @state/turn!)
+               :select (mo/clear-placeholder-sprites!)
+               :action (do
+                         (ht/unselect-home-heroes)
+                         (mo/remove-sprite-glow-overlay! :bot)
+                         (mo/display-home-sprite-glow-overlay)))))
       (.addChild ^js @state/map-container sprite))))
 
 (defn init-drag-handlers!
@@ -104,7 +116,7 @@
    appends its canvas to the DOM, and renders the tilemap."
   [container canvas-div]
   (when (and (nil? @container) @state/map-data @canvas-div)
-    (let [app (Application. (clj->js {:width (.-innerWidth js/window)
+    (let [app (Application. (clj->js {:width  (.-innerWidth js/window)
                                       :height (.-innerHeight js/window)}))]
       (reset! container app)
       (.appendChild @canvas-div (.-view app))
