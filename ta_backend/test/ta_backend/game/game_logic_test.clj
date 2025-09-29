@@ -56,5 +56,5 @@
 
   (fact "reset-game-state! clears everything"
         (gl/reset-game-state!)
-        @state/game-state => (state/->GameState {} {} nil nil nil)
+        @state/game-state => (state/->GameState {} {} nil nil nil 0)
         @rules/target-area-counters => {:player 0 :bot 0}))

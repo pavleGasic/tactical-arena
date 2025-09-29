@@ -1,10 +1,11 @@
 (ns ta-backend.ai.bot
   (:require [ta-backend.utils.game-utils :as game-utils]
-            [ta-backend.game.state :as state]))
+            [ta-backend.game.state :as state]
+            [ta-backend.ai.heuristics :as heuristics]))
 
 (defprotocol BotAI
-  (choose-move [this game-state hero])
   (choose-hero [this game-state])
+  (choose-move [this game-state hero])
   (choose-action [this game-state]))
 
 (defrecord EasyBot []
@@ -28,9 +29,16 @@
 
 (defrecord HardBot []
   BotAI
-  (choose-move [_ game-state __])
-  (choose-hero [_ game-state])
-  (choose-action [_ game-state]))
+  (choose-hero [_ game-state]
+    (heuristics/store-decision! game-state @state/game-map)
+    (heuristics/pick-best-hero))
+
+  (choose-move [_ __ ___]
+    (heuristics/pick-best-move))
+
+  (choose-action [_ __]
+    (heuristics/pick-best-action)))
+
 
 (defn create-bot [level]
   (case level

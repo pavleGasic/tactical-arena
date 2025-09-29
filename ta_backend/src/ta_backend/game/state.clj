@@ -4,10 +4,10 @@
 (defrecord Hero [type position hp max-hp])
 (defrecord Bot [level])
 (defrecord Position [x y])
-(defrecord GameState [player-heroes bot-heroes bot turn phase])
+(defrecord GameState [player-heroes bot-heroes bot turn phase turn-no])
 
 (defonce game-state (atom
-                      (->GameState {} {} nil nil nil)))
+                      (->GameState {} {} nil nil nil 0)))
 
 (defrecord Action [type from to])
 

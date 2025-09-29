@@ -16,7 +16,7 @@
                     :wizard  (state/create-wizard (state/->Position 41 7))
                     :medic   (state/create-medic (state/->Position 42 8))}]
     (reset! state/game-state
-            (state/->GameState player-heroes bot-heroes bot :player :move))
+            (state/->GameState player-heroes bot-heroes bot :player :move 1))
     @state/game-state))
 
 (defn move-hero [hero-id new-x new-y]
@@ -55,7 +55,7 @@
       {:success false})))
 
 (defn reset-game-state! []
-  (reset! state/game-state (state/->GameState {} {} nil nil nil))
+  (reset! state/game-state (state/->GameState {} {} nil nil nil 0))
   (reset! rules/target-area-counters {:player 0
                                       :bot    0}))
 
@@ -130,7 +130,11 @@
                     has-ended (:has-ended end-game-after)
                     winner (:winner end-game-after)]
                 (when-not (:has-ended end-game-after)
-                  (swap! state/game-state assoc :turn :player))
+                  (swap! state/game-state
+                         (fn [gs]
+                           (-> gs
+                               (assoc :turn :player)
+                               (update :turn-no inc)))))
                 {:success          true
                  :bot-updated-hero move
                  :bot-action       bot-action
